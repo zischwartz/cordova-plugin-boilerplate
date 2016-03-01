@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="your.name.space.swiftVideo" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="zischwartz.swiftVideo" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>cordova-plugin-swiftVideo</name>
   <js-module name="swiftVideo" src="www/swiftVideo.js">
     <clobbers target="cordova.plugins.swiftVideo" />
