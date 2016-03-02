@@ -12,6 +12,5 @@
       </feature>
     </config-file>
     <source-file src="src/ios/swiftVideoPlugin.swift" />
-    <source-file src="libGPUImage.a" custom="true" framework="true" />
   </platform>
 </plugin>
