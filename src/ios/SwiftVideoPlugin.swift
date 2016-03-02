@@ -1,10 +1,13 @@
 import Foundation
 
+import GPUImageVideoCamera
+
 @objc(SwiftVideoPlugin) class SwiftVideoPlugin : CDVPlugin {
   func sayHello(command: CDVInvokedUrlCommand) {
+  	// print(CDVInvokedUrlCommand)
+  	// print(GPUImageVideoCamera)
   	commandDelegate?.runInBackground({() -> Void in
 	    let message = "Hello !";
-	    // print(CDVInvokedUrlCommand)
 	    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message);
 	    pluginResult.setKeepCallbackAsBool(true)
 	    self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId);
