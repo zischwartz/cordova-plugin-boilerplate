@@ -2,6 +2,14 @@ import Foundation
 
 import GPUImage
 
+// extension UInt8: AnyObject {
+// }
+
+// class My_UInt: UnsignedIntegerType, Comparable, Equatable {
+//     // func areaSelected(view:UIView,points:NSArray)
+// }
+
+
 @objc(SwiftVideoPlugin) class SwiftVideoPlugin : CDVPlugin {
   var videoCamera:GPUImageVideoCamera?
   var filter:GPUImagePixellateFilter?
@@ -55,11 +63,12 @@ import GPUImage
 				var data = NSData(bytes: self.rawBytesForImage!, length: Int(352*288*4)) // also WORKS
 				
 				// http://stackoverflow.com/a/24516400/83859
-				let count = data.length / sizeof(UInt) // all should be uint8, but uint seems to work with anyobject? 
+				let count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
 				// // create array of appropriate length:
-				var array = [UInt](count: count, repeatedValue: 0) //UInt32
+				var array = [Any](count: count, repeatedValue: 0) // uint8
 				// // copy bytes into array
-				data.getBytes(&array, length:count * sizeof(UInt))
+				data.getBytes(&array, length:count * sizeof(UInt8))
+				// array.joinWithSeparator("-")
 				// print(array)
 
 				// print(data.bytes.memory)
@@ -67,10 +76,11 @@ import GPUImage
 
 				// let data = NSData(bytes: self.rawBytesForImage!, length: Int(35*28*4)) // also WORKS
 				print("frame")
-				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
+				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: &data) // or buffer or data
+				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: data) // or buffer or data
 				
-				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: array) // or buffer or data
+				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: array) // or buffer or data
 				pluginResult.setKeepCallbackAsBool(true)
 				self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
