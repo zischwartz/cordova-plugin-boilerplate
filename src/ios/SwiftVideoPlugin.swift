@@ -55,12 +55,12 @@ import GPUImage
 				var data = NSData(bytes: self.rawBytesForImage!, length: Int(352*288*4)) // also WORKS
 				
 				// http://stackoverflow.com/a/24516400/83859
-				let count = data.length / sizeof(UInt8)
+				let count = data.length / sizeof(UInt) // all should be uint8, but uint seems to work with anyobject? 
 				// // create array of appropriate length:
-				var array = [UInt8](count: count, repeatedValue: 0) //UInt32
+				var array = [UInt](count: count, repeatedValue: 0) //UInt32
 				// // copy bytes into array
-				data.getBytes(&array, length:count * sizeof(UInt8))
-				print(array)
+				data.getBytes(&array, length:count * sizeof(UInt))
+				// print(array)
 
 				// print(data.bytes.memory)
 				// let ptr = UnsafePointer<UInt8>(data.bytes)
@@ -70,9 +70,9 @@ import GPUImage
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: &data) // or buffer or data
 				
-				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: array) // or buffer or data
-				// pluginResult.setKeepCallbackAsBool(true)
-				// self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
+				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: array) // or buffer or data
+				pluginResult.setKeepCallbackAsBool(true)
+				self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
         }
 //        https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageLookupFilter.h
