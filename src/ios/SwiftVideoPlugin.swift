@@ -44,7 +44,7 @@ import GPUImage
 
         self.output!.newFrameAvailableBlock = { () in
             let since_last = ((NSDate().timeIntervalSinceReferenceDate-self.last_time.timeIntervalSinceReferenceDate)*1000)
-            if since_last > 2000 {
+            if since_last > 500 {
 	            // print(since_last)
 	            self.rawBytesForImage = self.output!.rawBytesForImage
 	            // print("raw raw mem:")
