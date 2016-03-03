@@ -61,11 +61,13 @@ import GPUImage
 	            // https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html
 
 				var data = NSData(bytes: self.rawBytesForImage!, length: Int(352*288*4)) // also WORKS
+				var data_string = String(bytes: data, encoding: NSUTF8StringEncoding)
+				print(data_string)
 				
 				// http://stackoverflow.com/a/24516400/83859
 				let count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
 				// // create array of appropriate length:
-				var array = [Any](count: count, repeatedValue: 0) // uint8
+				var array = [UInt8](count: count, repeatedValue: 0) // but cordova wants AnyObject gah
 				// // copy bytes into array
 				data.getBytes(&array, length:count * sizeof(UInt8))
 				// array.joinWithSeparator("-")
