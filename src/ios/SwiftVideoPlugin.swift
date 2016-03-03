@@ -61,15 +61,19 @@ import GPUImage
 	            // https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html
 
 				var data = NSData(bytes: self.rawBytesForImage!, length: Int(352*288*4)) // also WORKS
-				var data_string = String(bytes: data, encoding: NSUTF8StringEncoding)
-				print(data_string)
+				// var data_string = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
+
 				
 				// http://stackoverflow.com/a/24516400/83859
 				let count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
-				// // create array of appropriate length:
+				// // // create array of appropriate length:
 				var array = [UInt8](count: count, repeatedValue: 0) // but cordova wants AnyObject gah
-				// // copy bytes into array
+				// // // copy bytes into array
 				data.getBytes(&array, length:count * sizeof(UInt8))
+				// print(array.map({"\($0)"}).joinWithSeparator("-"))
+				// var str = String(bytes: array, encoding: NSUTF8StringEncoding)
+				// print(str)
+				// print(array.joinWithSeparator("-"))
 				// array.joinWithSeparator("-")
 				// print(array)
 
@@ -78,7 +82,8 @@ import GPUImage
 
 				// let data = NSData(bytes: self.rawBytesForImage!, length: Int(35*28*4)) // also WORKS
 				print("frame")
-				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
+				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: array.map({"\($0)"}).joinWithSeparator(",")) // buffer
+				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: &data) // or buffer or data
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: data) // or buffer or data
 				
