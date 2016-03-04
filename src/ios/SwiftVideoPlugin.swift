@@ -71,7 +71,6 @@ import GPUImage
 				// // // copy bytes into array
 				data.getBytes(&array, length:count * sizeof(UInt8))
 				// print(array.map({"\($0)"}).joinWithSeparator("-"))
-				// var str = String(bytes: array, encoding: NSUTF8StringEncoding)
 				// print(str)
 				// print(array.joinWithSeparator("-"))
 				// array.joinWithSeparator("-")
@@ -82,13 +81,20 @@ import GPUImage
 
 				// let data = NSData(bytes: self.rawBytesForImage!, length: Int(35*28*4)) // also WORKS
 				print("frame")
-				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: array.map({"\($0)"}).joinWithSeparator(",")) // buffer
+
+				// Works!
+				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: array.map({"\($0)"}).joinWithSeparator(",")) // buffer
+
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "Hey hey h!!!!!ey!") // buffer
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: &data) // or buffer or data
-				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: data) // or buffer or data
 				
+				// Sends an empty array buffer? Gahh
+				let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArrayBuffer: data) // or buffer or data
+
+				// This seems like it would work, but for `Cannot convert value of type '[UInt8]' to expected argument type '[AnyObject]!'`
 				// let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: array) // or buffer or data
 				pluginResult.setKeepCallbackAsBool(true)
+
 				self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
         }
