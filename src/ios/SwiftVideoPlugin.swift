@@ -2,13 +2,6 @@ import Foundation
 
 import GPUImage
 
-// extension UInt8: AnyObject {
-// }
-
-// class My_UInt: UnsignedIntegerType, Comparable, Equatable {
-//     // func areaSelected(view:UIView,points:NSArray)
-// }
-
 
 @objc(SwiftVideoPlugin) class SwiftVideoPlugin : CDVPlugin {
   var videoCamera:GPUImageVideoCamera?
@@ -46,7 +39,7 @@ import GPUImage
 
 	        self.output!.newFrameAvailableBlock = { () in
 	            let since_last = ((NSDate().timeIntervalSinceReferenceDate-self.last_time.timeIntervalSinceReferenceDate)*1000)
-	            if since_last > 500 {
+	            if since_last > 2000 {
 		            // print(since_last)
 		            self.rawBytesForImage = self.output!.rawBytesForImage
 		            // print("raw raw mem:") // print(self.rawBytesForImage!.memory)
