@@ -34,12 +34,11 @@ import GPUImage
 	//        Works
 	        // self.output = GPUImageRawDataOutput(imageSize: CGSizeMake(35, 28), resultsInBGRAFormat: true)
 	        self.output = GPUImageRawDataOutput(imageSize: CGSizeMake(352, 288), resultsInBGRAFormat: true)
-	//        this works too, slightly slower it seems? unlike guy says
-	//        output = MyRawDataOutput(imageSize: CGSizeMake(352, 288), resultsInBGRAFormat: true)
+
 
 	        self.output!.newFrameAvailableBlock = { () in
 	            let since_last = ((NSDate().timeIntervalSinceReferenceDate-self.last_time.timeIntervalSinceReferenceDate)*1000)
-	            if since_last > 2000 {
+	            if since_last > 300 {
 		            // print(since_last)
 		            self.rawBytesForImage = self.output!.rawBytesForImage
 		            // print("raw raw mem:") // print(self.rawBytesForImage!.memory)
