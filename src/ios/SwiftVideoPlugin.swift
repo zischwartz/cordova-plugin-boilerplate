@@ -9,32 +9,26 @@ import GPUImage
   var output:GPUImageRawDataOutput?
   var rawBytesForImage: UnsafeMutablePointer<GLubyte>? //UInt8
   var last_time = NSDate()
-
-  var lanczosResamplingFilter: GPUImageLanczosResamplingFilter = GPUImageLanczosResamplingFilter()
+  var lanczosResamplingFilter:GPUImageLanczosResamplingFilter?
+  var destSize:CGSize?
 
   func sayHello(command: CDVInvokedUrlCommand) {
   		self.commandDelegate?.runInBackground({() -> Void in
 
 	        self.videoCamera = GPUImageVideoCamera(sessionPreset: AVCaptureSessionPreset352x288, cameraPosition: .Back)
 	        self.videoCamera!.outputImageOrientation = .Portrait;
-
-	        self.lanczosResamplingFilter.forceProcessingAtSize(CGSizeMake(35, 28))
-
-	        // stillImageSource.addTarget(lanczosResamplingFilter)
-	        // lanczosResamplingFilter.useNextFrameForImageCapture()
-	        // stillImageSource.processImage()
-	        // var lanczosImage: UIImage = lanczosResamplingFilter.imageFromCurrentFramebuffer()
-
-
-	        // filter = GPUImagePixellateFilter()
-	        // videoCamera?.addTarget(filter)
-	        // videoCamera?.addTarget(filter)
-	        // filter?.addTarget(self.view as! GPUImageView)
+	        self.lanczosResamplingFilter = GPUImageLanczosResamplingFilter()
+	        // self.destSize = CGSize(width: 352, height: 288)
+	        self.destSize = CGSize(width: 352/2, height: 288/2)
+	        //  ????????????
+	        // AVCaptureVideoOrientationLandscapeRight
+	        // .LandscapeRight
+	        // self.videoCamera.setInputRotation(.GPUImageRotateRight, atIndex:0)
 
 	//        Works
 	        // self.output = GPUImageRawDataOutput(imageSize: CGSizeMake(35, 28), resultsInBGRAFormat: true)
-	        self.output = GPUImageRawDataOutput(imageSize: CGSizeMake(352, 288), resultsInBGRAFormat: true)
-
+	        self.output = GPUImageRawDataOutput(imageSize: self.destSize!, resultsInBGRAFormat: true)
+	        // self.output = GPUImageRawDataOutput(imageSize: self.size, resultsInBGRAFormat: true)
 
 	        self.output!.newFrameAvailableBlock = { () in
 	            let since_last = ((NSDate().timeIntervalSinceReferenceDate-self.last_time.timeIntervalSinceReferenceDate)*1000)
@@ -43,9 +37,15 @@ import GPUImage
 		            self.rawBytesForImage = self.output!.rawBytesForImage
 		            // print("raw raw mem:") // print(self.rawBytesForImage!.memory)
 		            self.last_time = NSDate()
-					var data = NSData(bytes: self.rawBytesForImage!, length: Int(352*288*4)) // also WORKS
+					// var data = NSData(bytes: self.rawBytesForImage!, length: Int(self.destSize.width*self.destSize.height*4)) 
+					var data = NSData(bytes: self.rawBytesForImage!, length: Int(self.destSize!.width*self.destSize!.height*4)) 
+					// var data = NSData(bytes: self.rawBytesForImage!, length: Int(35*28*4)) 
 					// http://stackoverflow.com/a/24516400/83859
-					// let count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
+					var count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
+					print(self.destSize)
+					print(count)
+					//405 504 with no filter
+					// 3920 with 35*28
 					// create array of appropriate length:
 					// var array = [UInt8](count: count, repeatedValue: 0) // but cordova wants AnyObject gah
 					// copy bytes into array
@@ -68,7 +68,13 @@ import GPUImage
 	        }
 	//        https://github.com/BradLarson/GPUImage/blob/master/framework/Source/GPUImageLookupFilter.h
 	//        answer: http://stackoverflow.com/questions/33731637/how-to-create-gpuimage-lookup-png-resource
+
+	        
+	        // self.lanczosResamplingFilter?.forceProcessingAtSize(self.destSize!)
 	        // self.videoCamera?.addTarget(self.lanczosResamplingFilter)
+	        // self.lanczosResamplingFilter?.addTarget(self.output)
+	        // self.videoCamera?.startCameraCapture()
+
 	        self.videoCamera?.addTarget(self.output)
 	        self.videoCamera?.startCameraCapture()
 
