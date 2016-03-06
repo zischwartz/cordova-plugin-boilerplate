@@ -23,15 +23,6 @@ struct Options {
   func setupPalette(command: CDVInvokedUrlCommand) {
   	print("setupPalette called (Swift)")
   	self.options.palette = command.arguments[0] as? [[Float]]
-  	print(self.options)
-  	var a = KDPointImpl(values: [9,3, 14], payload: Int())
-  	// print(a)
-  	let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
-  	self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
-  }
-
-  func setupCamera(command: CDVInvokedUrlCommand) {
-  	// self.options.palette = command.arguments[0] as? [[Float]]
   	// print(self.options)
   	// var a = KDPointImpl(values: [9,3, 14], payload: Int())
   	// print(a)
@@ -39,7 +30,26 @@ struct Options {
   	self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
   }
 
-  func sayHello(command: CDVInvokedUrlCommand) {
+  func setupCamera(command: CDVInvokedUrlCommand) {
+  	// print(command.arguments)
+  	let js_opt = command.arguments[0]
+  	// print(js_opt)
+  	// print(js_opt["width"])
+ //  	let width: Int = js_opt["width"]
+ //  	let height: Int = js_opt["height"]
+  	self.options.size = CGSize(width: js_opt["width"] as! Int, height: js_opt["height"] as! Int)
+  	self.options.minMsPerFrame = js_opt["ms"] as! Int
+ //  	// print(self.options.size)
+ //  	// print(js_opt)
+ //  	// print(js_opt.ms)
+
+
+  	print(self.options)
+  	let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
+  	self.commandDelegate?.sendPluginResult(pluginResult, callbackId:command.callbackId)
+  }
+
+  func begin(command: CDVInvokedUrlCommand) {
   		self.commandDelegate?.runInBackground({() -> Void in
 
 	        self.videoCamera = GPUImageVideoCamera(sessionPreset: AVCaptureSessionPreset352x288, cameraPosition: .Back)
