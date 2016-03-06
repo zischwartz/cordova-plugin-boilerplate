@@ -20,6 +20,7 @@ import GPUImage
 	        self.lanczosResamplingFilter = GPUImageLanczosResamplingFilter()
 	        // self.destSize = CGSize(width: 352, height: 288)
 	        self.destSize = CGSize(width: 352/2, height: 288/2)
+	        // self.destSize = CGSize(width: 128, height: 96)
 	        // 128 × 96 ? https://en.wikipedia.org/wiki/Common_Intermediate_Format
 	        //  ????????????
 	        // AVCaptureVideoOrientationLandscapeRight
@@ -33,7 +34,10 @@ import GPUImage
 
 	        self.output!.newFrameAvailableBlock = { () in
 	            let since_last = ((NSDate().timeIntervalSinceReferenceDate-self.last_time.timeIntervalSinceReferenceDate)*1000)
-	            if since_last > 100 {
+	            // 300 was good at 352, 2888
+	            // 50 for "/2 "/2
+	            // 0 at 128, 96
+	            if since_last > 50 { 
 		            // print(since_last)
 		            self.rawBytesForImage = self.output!.rawBytesForImage
 		            // print("raw raw mem:") // print(self.rawBytesForImage!.memory)
@@ -43,8 +47,8 @@ import GPUImage
 					// var data = NSData(bytes: self.rawBytesForImage!, length: Int(35*28*4)) 
 					// http://stackoverflow.com/a/24516400/83859
 					var count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
-					print(self.destSize)
-					print(count)
+					// print(self.destSize)
+					// print(count)
 					//405 504 with no filter
 					// 3920 with 35*28
 					// create array of appropriate length:
