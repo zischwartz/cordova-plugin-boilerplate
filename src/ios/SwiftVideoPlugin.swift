@@ -59,7 +59,7 @@ struct Options {
 		            self.rawBytesForImage = self.output!.rawBytesForImage
 					var data = NSData(bytes: self.rawBytesForImage!, length: Int(self.options.size!.width*self.options.size!.height*4)) 
 					var count = data.length / sizeof(UInt8) // all should be uint8, but uint seems to work with anyobject? 
-                    // print(count)
+                    print(count)
 
 					// This creates `data` an ArrayBuffer on the js side. 
                     // To use it, you'll probably need a DataView 
